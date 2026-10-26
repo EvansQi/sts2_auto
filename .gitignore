@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Run artifacts
+runs/
+logs/
+*.jsonl
+smoke.log
+inspect_log.py
+
+# Local toolchain
+.dotnet9/
+.dotnet/

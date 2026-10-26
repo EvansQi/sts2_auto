@@ -1,0 +1,25 @@
+﻿diff --git a/src/Sts2Headless/RunSimulator.cs b/src/Sts2Headless/RunSimulator.cs
+index 8d9f3ad..34c6d83 100644
+--- a/src/Sts2Headless/RunSimulator.cs
++++ b/src/Sts2Headless/RunSimulator.cs
+@@ -3081,7 +3081,10 @@ public class RunSimulator
+         // for unmodded runs. TestMode skips filesystem/workshop mod loading.
+         MegaCrit.Sts2.Core.Modding.ModManager.Initialize(
+             new MegaCrit.Sts2.Core.Modding.ModManagerFileIo(), null, null).GetAwaiter().GetResult();
+-        MegaCrit.Sts2.Core.Modding.AssemblyInfo.Init();
++        // v0.111 needs AssemblyInfo.Init(); v0.107 has no such type, so call it
++        // defensively through reflection to keep one build working on both.
++        var asmInfoType = Type.GetType("MegaCrit.Sts2.Core.Modding.AssemblyInfo, sts2");
++        asmInfoType?.GetMethod("Init", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.Invoke(null, null);
+ 
+         // Install inline sync context on main thread
+         SynchronizationContext.SetSynchronizationContext(_syncCtx);
+@@ -3754,7 +3757,7 @@ public class RunSimulator
+         {
+             try
+             {
+-                await CreatureCmd.Damage(ctx, play.Target!, card.DynamicVars.Damage, card, play);
++                await CreatureCmd.Damage(ctx, play.Target!, card.DynamicVars.Damage, card);
+                 await PowerCmd.Apply<WeakPower>(ctx, play.Target!, card.DynamicVars["WeakPower"].BaseValue,
+                     card.Owner.Creature, card, false);
+             }

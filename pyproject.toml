@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sts2-auto"
+version = "0.1.0"
+description = "Headless Slay the Spire 2 automation: environment adapter + rule-based agent"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+sts2-auto = "sts2_auto.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sts2_auto*"]
